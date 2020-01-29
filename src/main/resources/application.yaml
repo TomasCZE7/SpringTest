@@ -1,0 +1,24 @@
+# db
+spring.datasource:
+  url: jdbc:postgresql://localhost/demo
+  username: demo
+  password: demo
+  driver-class-name: org.postgresql.Driver
+spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
+
+server.port: 8079
+
+# swagger-ui
+swagger.enabled: true
+springfox.documentation.swagger.v2.path: /demo/swagger/v2/api-docs
+
+spring:
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+#      properties:
+#      hibernate:
+#        show_sql: false
+#        format_sql: false
