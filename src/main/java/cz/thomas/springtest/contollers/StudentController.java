@@ -32,9 +32,6 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    /*@Autowired
-    Testmapper testmapper;*/
-
     @ApiOperation(	value = "Prints 'Hello World'"  )
     @GetMapping("/helloworld")
     public String HelloWorld(){
