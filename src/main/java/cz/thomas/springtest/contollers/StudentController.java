@@ -39,23 +39,23 @@ public class StudentController {
     }
 
     @ApiOperation(	value = "Creates a student",
-            notes = "Creates a student with specific student ID.", produces = MediaType.APPLICATION_JSON_VALUE)
+            notes = "Creates a student based on json file.", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(path = "/student/create", consumes = "application/json")
     @Transactional
-    public void createStudent(@NotNull  @Valid @RequestBody StudentDTO studentDTO){
+    public void createStudent(@NotNull @Valid @RequestBody StudentDTO studentDTO){
         studentService.createStudent(studentDTO);
     }
 
     @ApiOperation(	value = "Adds a mark",
-            notes = ".", produces = MediaType.APPLICATION_JSON_VALUE)
+            notes = "Creates a mark and assigns it to the specified student by his id.", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(path = "/mark/create", consumes = "application/json")
     @Transactional
-    public void addMark(@RequestBody @Valid @NotNull MarkDTO markDTO, Long studentId){
+    public void addMark(@RequestBody @Valid @NotNull MarkDTO markDTO, @NotNull @PathVariable Long studentId){
         markService.addMark(markDTO, studentId);
     }
 
     @ApiOperation(	value = "Deletes a mark",
-            notes = "Deletes a mark based on a markID", produces = MediaType.APPLICATION_JSON_VALUE)
+            notes = "Deletes a mark based on a markID"  )
     @DeleteMapping("/mark/{markId}/delete")
     @Transactional
     public void deleteMark(@NotNull @PathVariable Long markId) {
@@ -65,10 +65,8 @@ public class StudentController {
     @ApiOperation(	value = "Show data of specific student",
             notes = "Returns a json containing data of specific student.", produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping(path = "/student/{studentId}")
-    @Transactional
     public StudentDTO getStudent(@NotNull @PathVariable Long studentId) {
         return studentService.getStudent(studentId);
-
     }
 
     @ApiOperation(	value = "Show all students",
@@ -79,7 +77,7 @@ public class StudentController {
     }
 
     @ApiOperation(	value = "Deletes a student",
-            notes = "Deletes a student based on a studentID", produces = MediaType.APPLICATION_JSON_VALUE)
+            notes = "Deletes a student based on a studentID." )
     @DeleteMapping("/student/{studentId}/delete")
     @Transactional
     public void deleteStudent(@NotNull @PathVariable Long studentId){
