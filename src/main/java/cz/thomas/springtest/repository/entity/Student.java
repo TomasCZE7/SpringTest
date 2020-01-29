@@ -29,11 +29,8 @@ public class Student {
     @Column(name="age")
     private int age;
 
-    @Column(name="class_number")
-    private int classNumber;
-
-    @Column(name="specialization")
-    private String specialization;
+    @ManyToOne
+    private SchoolClass partOfClass;
 
     @Column(name="address")
     private String address;
@@ -57,14 +54,6 @@ public class Student {
         this.age = age;
     }
 
-    public void setClassNumber(int classNumber) {
-        this.classNumber = classNumber;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -72,5 +61,6 @@ public class Student {
     public void addGraduationMark(List<Mark> graduationMarks) {
         this.graduationMarks = graduationMarks;
     }
+
 
 }

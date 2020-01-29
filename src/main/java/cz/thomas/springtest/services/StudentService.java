@@ -8,6 +8,7 @@ import cz.thomas.springtest.repository.MarkRepository;
 import cz.thomas.springtest.repository.StudentRepository;
 import cz.thomas.springtest.repository.entity.Mark;
 import cz.thomas.springtest.repository.entity.Student;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +31,21 @@ public class StudentService {
     @Autowired
     MarkMapper markMapper;
 
+    @Autowired
+    MarkService markService;
 
-    public void createStudent(StudentDTO studentDTO) {
-        Student entity = studentMapper.fromDTO(studentDTO);
+
+    public void createStudent(StudentDTO studentDTO, Long classId) {
+        Student entity = studentMapper.fromDTO(studentDTO, classId);
         studentRepository.save(entity);
         for(MarkDTO markDTO : studentDTO.getGraduationMarks()){
-            Mark mark = markMapper.fromDTO(markDTO, entity.getId());
-            markRepository.save(mark);
+            markService.addMark(markDTO, entity.getId());
+        }
+    }
+    public void createStudent(Student student) {
+        studentRepository.save(student);
+        for(Mark mark : student.getGraduationMarks()){
+            markService.addMark(mark);
         }
     }
 
@@ -45,8 +54,19 @@ public class StudentService {
         return returnValue.map(student -> studentMapper.toDTO(student)).orElse(null);
     }
 
+    public void deleteStudent(Student student) {
+        for(Mark mark : student.getGraduationMarks()){
+            markRepository.delete(mark);
+        }
+        studentRepository.delete(student);
+    }
+
     public void deleteStudent(Long studentId) {
-        studentRepository.deleteById(studentId);
+        Optional<Student> result = studentRepository.findById(studentId);
+        if(!result.isPresent()){
+            return;
+        }
+        deleteStudent(result.get());
     }
 
     public List<StudentDTO> getAllStudents() {
